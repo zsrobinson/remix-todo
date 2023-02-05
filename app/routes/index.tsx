@@ -11,17 +11,18 @@ import { useEffect, useRef } from "react";
 import { prisma } from "~/db.server";
 
 export async function loader({}: LoaderArgs) {
-  let todos = await prisma.todos.findMany({
-    orderBy: {
-      completed: "asc",
-    },
-  });
-
-  let completedItems = await prisma.todos.count({
-    where: {
-      completed: true,
-    },
-  });
+  const [todos, completedItems] = await Promise.all([
+    prisma.todos.findMany({
+      orderBy: {
+        completed: "asc",
+      },
+    }),
+    prisma.todos.count({
+      where: {
+        completed: true,
+      },
+    }),
+  ]);
 
   return json({ todos, completedItems });
 }
