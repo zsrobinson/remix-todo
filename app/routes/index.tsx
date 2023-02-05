@@ -1,5 +1,11 @@
 import { ActionArgs, json, LoaderArgs } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
+import {
+  IconSquareRounded,
+  IconSquareRoundedCheck,
+  IconSquareRoundedPlus,
+  IconX,
+} from "@tabler/icons-react";
 import { prisma } from "~/db.server";
 
 export async function loader({}: LoaderArgs) {
@@ -12,10 +18,11 @@ export default function Index() {
 
   return (
     <main className="m-4">
-      <ul>
+      <h2 className="text-xl font-semibold mb-4">Default Todo List</h2>
+      <ul className="flex flex-col gap-2">
         {todos.map((todo) => (
-          <li key={todo.id}>
-            <Form method="post" className="inline pr-4">
+          <li key={todo.id} className="flex gap-2 items-center">
+            <Form method="post" className="flex items-center">
               <input type="hidden" name="id" value={todo.id} />
               <input
                 type="hidden"
@@ -23,31 +30,34 @@ export default function Index() {
                 value={todo.completed.toString()}
               />
               <button type="submit" name="_action" value="toggle">
-                {todo.completed ? "[✓]" : "[ ]"}
+                {todo.completed ? (
+                  <IconSquareRoundedCheck />
+                ) : (
+                  <IconSquareRounded />
+                )}
               </button>
             </Form>
 
             {todo.title}
 
-            <Form method="post" className="inline pl-4">
+            <Form method="post" className="flex items-center">
               <input type="hidden" name="id" value={todo.id} />
               <button type="submit" name="_action" value="remove">
-                X
+                <IconX size={16} className="text-zinc-500 mt-[2px]" />
               </button>
             </Form>
           </li>
         ))}
+
         <li>
-          <Form method="post">
-            <input name="title" />
-            <button
-              type="submit"
-              name="_action"
-              value="add"
-              style={{ marginLeft: "4px" }}
-            >
-              Add Todo
+          <Form method="post" className="flex gap-2 items-center">
+            <button type="submit" name="_action" value="add">
+              <IconSquareRoundedPlus />
             </button>
+            <input
+              name="title"
+              className="bg-zinc-900 border-zinc-500 border-b focus:border-zinc-300 focus:outline-0"
+            />
           </Form>
         </li>
       </ul>
