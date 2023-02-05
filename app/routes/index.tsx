@@ -1,11 +1,12 @@
 import { ActionArgs, json, LoaderArgs } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, useTransition } from "@remix-run/react";
 import {
   IconSquareRounded,
   IconSquareRoundedCheck,
   IconSquareRoundedPlus,
   IconX,
 } from "@tabler/icons-react";
+import { useEffect, useRef } from "react";
 import { prisma } from "~/db.server";
 
 export async function loader({}: LoaderArgs) {
@@ -15,6 +16,18 @@ export async function loader({}: LoaderArgs) {
 
 export default function Index() {
   const todos = useLoaderData<typeof loader>();
+
+  const transition = useTransition();
+  const isAdding =
+    transition.state === "submitting" &&
+    transition.submission.formData.get("_action") === "add";
+  let addFormRef = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    // triggers after adding a todo
+    if (!isAdding) {
+      addFormRef.current?.reset();
+    }
+  }, [isAdding]);
 
   return (
     <main className="m-4">
@@ -50,7 +63,11 @@ export default function Index() {
         ))}
 
         <li>
-          <Form method="post" className="flex gap-2 items-center">
+          <Form
+            method="post"
+            className="flex gap-2 items-center"
+            ref={addFormRef}
+          >
             <button type="submit" name="_action" value="add">
               <IconSquareRoundedPlus />
             </button>
