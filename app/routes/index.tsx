@@ -11,15 +11,11 @@ export default function Index() {
   const todos = useLoaderData<typeof loader>();
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Remix Todo!</h1>
+    <main className="m-4">
       <ul>
         {todos.map((todo) => (
           <li key={todo.id}>
-            <Form
-              method="post"
-              style={{ display: "inline", paddingRight: "4px" }}
-            >
+            <Form method="post" className="inline pr-4">
               <input type="hidden" name="id" value={todo.id} />
               <input
                 type="hidden"
@@ -33,10 +29,7 @@ export default function Index() {
 
             {todo.title}
 
-            <Form
-              method="post"
-              style={{ display: "inline", paddingLeft: "4px" }}
-            >
+            <Form method="post" className="inline pl-4">
               <input type="hidden" name="id" value={todo.id} />
               <button type="submit" name="_action" value="remove">
                 X
@@ -58,7 +51,7 @@ export default function Index() {
           </Form>
         </li>
       </ul>
-    </div>
+    </main>
   );
 }
 
