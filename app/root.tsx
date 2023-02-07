@@ -1,5 +1,5 @@
 import { List } from "@prisma/client";
-import { json, LoaderArgs, MetaFunction } from "@remix-run/node";
+import { ActionArgs, json, LoaderArgs, MetaFunction } from "@remix-run/node";
 import {
   Form,
   Links,
@@ -32,7 +32,7 @@ export async function loader({}: LoaderArgs) {
 
 export default function App() {
   return (
-    <html lang="en">
+    <html lang="en" style={{ colorScheme: "dark" }}>
       <head>
         <Meta />
         <Links />
@@ -70,9 +70,7 @@ function Sidebar() {
         className="m-4 flex items-center gap-3 rounded-md border border-zinc-700 p-4 text-zinc-300 transition hover:bg-zinc-700 hover:bg-opacity-50"
       >
         <IconPlus size={16} />
-        <span className="mb-0.5 font-semibold leading-none">
-          Create a New List
-        </span>
+        <span className="font-semibold leading-none">Create a New List</span>
       </NavLink>
     </div>
   );
