@@ -1,6 +1,7 @@
 import { List } from "@prisma/client";
 import { json, LoaderArgs, MetaFunction } from "@remix-run/node";
 import {
+  Form,
   Links,
   LiveReload,
   Meta,
@@ -10,7 +11,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import { IconSquareRoundedCheck } from "@tabler/icons-react";
+import { IconPlus, IconSquareRoundedCheck } from "@tabler/icons-react";
 import { prisma } from "./db.server";
 import styles from "./styles/app.css";
 
@@ -52,16 +53,27 @@ function Sidebar() {
   const lists = useLoaderData<typeof loader>();
 
   return (
-    <div className="h-full w-64 bg-zinc-800 bg-opacity-50 text-zinc-50">
-      <div className="flex items-center justify-center gap-2 border-b border-zinc-700">
-        <IconSquareRoundedCheck />
-        <h1 className="my-4 text-2xl font-bold">Remix Todo</h1>
+    <div className="flex h-full w-64 flex-col justify-between bg-zinc-800 bg-opacity-50 text-zinc-50">
+      <div>
+        <div className="flex items-center justify-center gap-2 border-b border-zinc-700">
+          <IconSquareRoundedCheck />
+          <h1 className="my-4 text-2xl font-bold">Remix Todo</h1>
+        </div>
+        <nav className="m-4 flex flex-col">
+          {lists.map((list) => (
+            <ListLink key={list.id} {...list} />
+          ))}
+        </nav>
       </div>
-      <nav className="flex flex-col gap-2 p-4">
-        {lists.map((list) => (
-          <ListLink key={list.id} {...list} />
-        ))}
-      </nav>
+      <NavLink
+        to="/list/new"
+        className="m-4 flex items-center gap-3 rounded-md border border-zinc-700 p-4 text-zinc-300 transition hover:bg-zinc-700 hover:bg-opacity-50"
+      >
+        <IconPlus size={16} />
+        <span className="mb-0.5 font-semibold leading-none">
+          Create a New List
+        </span>
+      </NavLink>
     </div>
   );
 }
@@ -105,10 +117,10 @@ function ListLink({
   return (
     <NavLink
       to={`/list/${id}`}
-      className="flex items-center gap-2 rounded-md px-3 py-2 transition hover:bg-zinc-700 hover:bg-opacity-50"
+      className="flex items-center gap-3 rounded-md p-4 transition hover:bg-zinc-700 hover:bg-opacity-50"
     >
       <div
-        className={`h-3 w-3 rounded-full ${
+        className={`mx-0.5 h-4 w-4 rounded-full ${
           colorVariants[color as keyof typeof colorVariants]
         }`}
       ></div>
