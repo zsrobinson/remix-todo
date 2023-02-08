@@ -10,10 +10,25 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Todos {
-  id        String   @id @default(uuid())
+model Todo {
+  id        String  @id @default(uuid())
   title     String
-  completed Boolean  @default(false)
+  completed Boolean @default(false)
+
+  list   List   @relation(fields: [listId], references: [id])
+  listId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model List {
+  id    String @id @default(uuid())
+  title String
+  color String
+
+  todos Todo[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
