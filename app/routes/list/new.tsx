@@ -4,6 +4,9 @@ import { IconPlus } from "@tabler/icons-react";
 import { prisma } from "~/db.server";
 
 export default function NewList() {
+  // prettier-ignore
+  const tailwindColors = ["white", "gray", "black", "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose"];
+
   return (
     <main className="m-4 flex flex-col gap-4">
       <h2 className="text-xl font-semibold">Create a New List</h2>
@@ -32,26 +35,11 @@ export default function NewList() {
               required
               className="rounded-md border border-zinc-700 bg-zinc-800 p-2"
             >
-              <option value="white">White</option>
-              <option value="gray">Gray</option>
-              <option value="black">Black</option>
-              <option value="red">Red</option>
-              <option value="orange">Orange</option>
-              <option value="amber">Amber</option>
-              <option value="yellow">Yellow</option>
-              <option value="lime">Lime</option>
-              <option value="green">Green</option>
-              <option value="emerald">Emerald</option>
-              <option value="teal">Teal</option>
-              <option value="cyan">Cyan</option>
-              <option value="sky">Sky</option>
-              <option value="blue">Blue</option>
-              <option value="indigo">Indigo</option>
-              <option value="violet">Violet</option>
-              <option value="purple">Purple</option>
-              <option value="fuchsia">Fuchsia</option>
-              <option value="pink">Pink</option>
-              <option value="rose">Rose</option>
+              {tailwindColors.map((color) => (
+                <option key={color} value={color}>
+                  {color}
+                </option>
+              ))}
             </select>
           </div>
         </div>
